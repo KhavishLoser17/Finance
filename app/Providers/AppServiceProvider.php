@@ -21,5 +21,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Schema::DefaultStringLength(191);
+        config(['auth.passwords.users.login' => 'signin']);
     }
 }

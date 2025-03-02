@@ -3,91 +3,8 @@
 @section('content')
 <div class="flex">
     <!-- Sidebar -->
-    <aside class="fixed left-0 h-screen w-64 bg-blue-300 text-white pt-16 p-4 space-y-4 overflow-y-auto">
-        <div class="flex items-center space-x-2 p-2">
-            <span class="text-lg font-semibold">Finance System</span>
-        </div>
-        <nav class="space-y-2">
-            <a href="{{ route('dashboard') }}" class="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('dashboard') ? 'bg-gray-700' : '' }}">
-                <span>🏠 Dashboard</span>
-            </a>
-            <a href="{{ route('ledger') }}" class="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('ledger') ? 'bg-gray-700' : '' }}">
-                <span>📖 General Ledger</span>
-            </a>
-            <hr class="border-gray-600 my-2">
-
-            <!-- Disbursement Section -->
-            <div>
-                <button class="dropdown-button flex items-center justify-between w-full p-2 rounded-md hover:bg-gray-700 transition">
-                    <span>💰 Disbursement</span>
-                    <i class="lucide-chevron-down"></i>
-                </button>
-                <div class="pl-6 mt-1 space-y-2 hidden">
-                    <a href="{{ route('payment') }}" class="block p-2 rounded-md hover:bg-gray-700 transition">
-                        📅 Payment Scheduling
-                    </a>
-                </div>
-            </div>
-
-            <!-- Collection Section -->
-            <div>
-                <button class="dropdown-button flex items-center justify-between w-full p-2 rounded-md hover:bg-gray-700 transition">
-                    <span>💳 Collection</span>
-                    <i class="lucide-chevron-down"></i>
-                </button>
-                <div class="pl-6 mt-1 space-y-2 hidden">
-                    <a href="{{ route('collected') }}" class="block p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('receivables.aging') ? 'bg-gray-700' : '' }}">
-                        📊 Collected Funds
-                    </a>
-                </div>
-            </div>
-
-            <!-- Budget Management Section -->
-            <div>
-                <button class="dropdown-button flex items-center justify-between w-full p-2 rounded-md hover:bg-gray-700 transition">
-                    <span>💼 Budget Management</span>
-                    <i class="lucide-chevron-down"></i>
-                </button>
-                <div class="pl-6 mt-1 space-y-2 hidden">
-                    <a href="{{ route('reimburse') }}" class="block p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('budget.forecast') ? 'bg-gray-700' : '' }}">
-                        📊 Reimbursement Request
-                    </a>
-                    <a href="{{ route('audit') }}" class="block p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('audit.logs') ? 'bg-gray-700' : '' }}">
-                        📝 Auditing & Transaction Logs
-                    </a>
-                </div>
-            </div>
-
-            <!-- Account Receivable Section -->
-            <div>
-                <button class="dropdown-button flex items-center justify-between w-full p-2 rounded-md hover:bg-gray-700 transition">
-                    <span>💵 Account Receivable</span>
-                    <i class="lucide-chevron-down"></i>
-                </button>
-                <div class="pl-6 mt-1 space-y-2 hidden">
-                    <a href="{{ route('receivables') }}" class="block p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('receivables.aging') ? 'bg-gray-700' : '' }}">
-                        📊 Receivable Financial Report
-                    </a>
-                </div>
-            </div>
-
-            <!-- Account Payable Section -->
-            <div>
-                <button class="dropdown-button flex items-center justify-between w-full p-2 rounded-md hover:bg-gray-700 transition">
-                    <span>💸 Account Payable</span>
-                    <i class="lucide-chevron-down"></i>
-                </button>
-                <div class="pl-6 mt-1 space-y-2 hidden">
-                    <a href="{{ route('compliance') }}" class="block p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('vendor.management') ? 'bg-gray-700' : '' }}">
-                        📅 Compliance
-                    </a>
-                    <a href="{{ route('tax') }}" class="block p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('payment.discount') ? 'bg-gray-700' : '' }}">
-                        💲 Tax and Insurance
-                    </a>
-                </div>
-            </div>
-        </nav>
-        </aside>
+    @include('layouts.navbar')
+    @include('layouts.sidenav')
 
     <!-- Main Content -->
     <main class="flex-1 ml-64 p-6">
@@ -103,7 +20,7 @@
                 </span>
                 <input type="text" placeholder="Search..." class="border border-blue-500 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
             </div>
-            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+            <button onclick="openModal()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
                 + Add
             </button>
         </div>
@@ -113,30 +30,154 @@
                     <tr>
                         <th class="p-3 border-b">Employee Name</th>
                         <th class="p-3 border-b">Request Date</th>
-                        <th class="p-3 border-b">Transaction Type</th>
+                        <th class="p-3 border-b">Description</th>
                         <th class="p-3 border-b">Evidence</th>
                         <th class="p-3 border-b">Amount</th>
-                        <th class="p-3 border-b">Status(Approved,Pending,Reject)</th>
+                        <th class="p-3 border-b">Status</th>
+                        <th class="p-3 border-b">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="even:bg-gray-50 hover:bg-gray-100">
-                        <td class="p-3 border-b">CEO</td>
-                        <td class="p-3 border-b">02/25/25</td>
-                        <td class="p-3 border-b">Reimburse Gas Fee</td>
-                        <td class="p-3 border-b">Receipt(Image)</td>
-                        <td class="p-3 border-b">500</td>
-                        <td class="p-3 border-b text-yellow-500">Pending</td>
-                    </tr>
-                    <tr class="even:bg-gray-50 hover:bg-gray-100">
-
-                    </tr>
-                    <tr class="even:bg-gray-50 hover:bg-gray-100">
-
-                    </tr>
+                    @foreach($reimburseList as $reimbursement)
+                        <tr>
+                            <td class="p-3 border-b">{{ $reimbursement->employee_name }}</td>
+                            <td class="p-3 border-b">{{ $reimbursement->request_date }}</td>
+                            <td class="p-3 border-b">{{ $reimbursement->description }}</td>
+                            <td class="p-3 border-b">
+                                <a href="{{ asset($reimbursement->evidence) }}" target="_blank">
+                                    <img src="{{ asset($reimbursement->evidence) }}" alt="Receipt" class="h-10 w-10 object-cover">
+                                </a>
+                            </td>
+                            <td class="p-3 border-b">₱{{ number_format($reimbursement->amount, 2) }}</td>
+                            <td class="p-4 border-b">
+                                <span class="px-3 py-1 text-sm font-semibold text-white
+                                    {{ $reimbursement->status == 'Rejected' ? 'bg-red-500' : ($reimbursement->status == 'Pending' ? 'bg-yellow-500' : 'bg-green-500') }}
+                                    rounded-full">
+                                    {{ $reimbursement->status }}
+                                </span>
+                            </td>
+                            <td class="border px-4 py-2">
+                                @if($reimbursement->status === 'Pending')
+                                    <form id="form-approve-{{ $reimbursement->id }}" action="{{ route('reimburse.approve', $reimbursement->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="button" class="text-green-500 cursor-pointer" onclick="updateStatus('approve', {{ $reimbursement->id }})">Approve</button>
+                                    </form>
+                                    |
+                                    <form id="form-reject-{{ $reimbursement->id }}" action="{{ route('reimburse.reject', $reimbursement->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="button" class="text-red-500 cursor-pointer" onclick="updateStatus('reject', {{ $reimbursement->id }})">Reject</button>
+                                    </form>
+                                @else
+                                    <span class="text-gray-400 cursor-not-allowed">Action not available</span>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
+
             </table>
         </div>
+
+        <div id="addModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+                <h2 class="text-lg font-semibold mb-4">Financial Request</h2>
+                <form action="{{ route('reimburse.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+
+                    <div class="mb-3">
+                        <label class="block text-sm font-medium text-gray-700">Employee Name</label>
+                        <input type="text" name="employee_name" class="w-full border-gray-300 rounded-lg p-2" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="block text-sm font-medium text-gray-700">Request Date</label>
+                        <input type="date" name="request_date" class="w-full border-gray-300 rounded-lg p-2" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="block font-medium">Transaction ID</label>
+                        <input type="text" name="transaction_id" class="w-full border rounded px-3 py-2" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="block font-medium">Description</label>
+                        <input type="text" name="description" class="w-full border rounded px-3 py-2" required placeholder="Reimbursement for ... ">
+                    </div>
+                    <div class="mb-3">
+                        <label class="block text-sm font-medium text-gray-700">Evidence</label>
+                        <input type="file" name="evidence" class="w-full border-gray-300 rounded-lg p-2">
+                    </div>
+                    <div class="relative">
+                        <label class="block mb-2">Amount</label>
+                        <div class="flex items-center border rounded mb-3">
+                            <span class="px-3 bg-gray-200 border-r">₱</span>
+                            <input type="number" name="amount" class="w-full p-2 border-none" required />
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="block font-medium">Debit or Credit</label>
+                        <select name="transaction_type" class="w-full border rounded px-3 py-2">
+                            <option value="Debit">Debit</option>
+                            <option value="Credit">Credit</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="block text-sm font-medium text-gray-700">Status</label>
+                        <select name="status" class="w-full border-gray-300 rounded-lg p-2">
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
+                    <div class="flex justify-end space-x-2">
+                        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500">
+                            Cancel
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     </main>
 </div>
+<script>
+    function openModal() {
+        document.getElementById("addModal").classList.remove("hidden");
+    }
+
+    function closeModal() {
+        document.getElementById("addModal").classList.add("hidden");
+    }
+</script>
+
+<script>
+    function updateStatus(action, id) {
+        let statusText = action === "approve" ? "approved" : "rejected";
+        let confirmText = action === "approve" ? "Yes, Approve" : "Yes, Reject";
+        let confirmColor = action === "approve" ? "#10B981" : "#EF4444";
+        let formId = `form-${action}-${id}`;
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: `Once confirmed, the status will be updated to ${statusText}.`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: confirmColor,
+            cancelButtonColor: "#6B7280",
+            confirmButtonText: confirmText
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Success!",
+                    text: `Status has been changed to ${statusText}.`,
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    document.getElementById(formId).submit();
+                });
+            }
+        });
+    }
+</script>
 @endsection

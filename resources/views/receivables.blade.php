@@ -3,92 +3,8 @@
 @section('content')
 <div class="flex">
     <!-- Sidebar -->
-    <aside class="fixed left-0 h-screen w-64 bg-blue-300 text-white pt-16 p-4 space-y-4 overflow-y-auto">
-        <div class="flex items-center space-x-2 p-2">
-            <span class="text-lg font-semibold">Finance System</span>
-        </div>
-        <nav class="space-y-2">
-            <a href="{{ route('dashboard') }}" class="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('dashboard') ? 'bg-gray-700' : '' }}">
-                <span>🏠 Dashboard</span>
-            </a>
-            <a href="{{ route('ledger') }}" class="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('ledger') ? 'bg-gray-700' : '' }}">
-                <span>📖 General Ledger</span>
-            </a>
-            <hr class="border-gray-600 my-2">
-
-            <!-- Disbursement Section -->
-            <div>
-                <button class="dropdown-button flex items-center justify-between w-full p-2 rounded-md hover:bg-gray-700 transition">
-                    <span>💰 Disbursement</span>
-                    <i class="lucide-chevron-down"></i>
-                </button>
-                <div class="pl-6 mt-1 space-y-2 hidden">
-                    <a href="{{ route('payment') }}" class="block p-2 rounded-md hover:bg-gray-700 transition">
-                        📅 Payment Scheduling
-                    </a>
-                </div>
-            </div>
-
-            <!-- Collection Section -->
-            <div>
-                <button class="dropdown-button flex items-center justify-between w-full p-2 rounded-md hover:bg-gray-700 transition">
-                    <span>💳 Collection</span>
-                    <i class="lucide-chevron-down"></i>
-                </button>
-                <div class="pl-6 mt-1 space-y-2 hidden">
-                    <a href="{{ route('collected') }}" class="block p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('receivables.aging') ? 'bg-gray-700' : '' }}">
-                        📊 Collected Funds
-                    </a>
-                </div>
-            </div>
-
-            <!-- Budget Management Section -->
-            <div>
-                <button class="dropdown-button flex items-center justify-between w-full p-2 rounded-md hover:bg-gray-700 transition">
-                    <span>💼 Budget Management</span>
-                    <i class="lucide-chevron-down"></i>
-                </button>
-                <div class="pl-6 mt-1 space-y-2 hidden">
-                    <a href="{{ route('reimburse') }}" class="block p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('budget.forecast') ? 'bg-gray-700' : '' }}">
-                        📊 Reimbursement Request
-                    </a>
-                    <a href="{{ route('audit') }}" class="block p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('audit.logs') ? 'bg-gray-700' : '' }}">
-                        📝 Auditing & Transaction Logs
-                    </a>
-                </div>
-            </div>
-
-            <!-- Account Receivable Section -->
-            <div>
-                <button class="dropdown-button flex items-center justify-between w-full p-2 rounded-md hover:bg-gray-700 transition">
-                    <span>💵 Account Receivable</span>
-                    <i class="lucide-chevron-down"></i>
-                </button>
-                <div class="pl-6 mt-1 space-y-2 hidden">
-                    <a href="{{ route('receivables') }}" class="block p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('receivables.aging') ? 'bg-gray-700' : '' }}">
-                        📊 Receivable Financial Report
-                    </a>
-                </div>
-            </div>
-
-            <!-- Account Payable Section -->
-            <div>
-                <button class="dropdown-button flex items-center justify-between w-full p-2 rounded-md hover:bg-gray-700 transition">
-                    <span>💸 Account Payable</span>
-                    <i class="lucide-chevron-down"></i>
-                </button>
-                <div class="pl-6 mt-1 space-y-2 hidden">
-                    <a href="{{ route('compliance') }}" class="block p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('vendor.management') ? 'bg-gray-700' : '' }}">
-                        📅 Compliance
-                    </a>
-                    <a href="{{ route('tax') }}" class="block p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('payment.discount') ? 'bg-gray-700' : '' }}">
-                        💲 Tax and Insurance
-                    </a>
-                </div>
-            </div>
-        </nav>
-
-    </aside>
+    @include('layouts.navbar')
+    @include('layouts.sidenav')
 
     <!-- Main Content -->
     <main class="flex-1 ml-64 p-6">
@@ -104,9 +20,6 @@
                 </span>
                 <input type="text" placeholder="Search..." class="border border-blue-500 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
             </div>
-            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-                + Add
-            </button>
         </div>
         <div class="bg-white p-6 shadow rounded-lg">
             <table class="w-full text-left border-collapse">
@@ -116,38 +29,66 @@
                         <th class="p-3 border-b">Sender ID</th>
                         <th class="p-3 border-b">Amount</th>
                         <th class="p-3 border-b">Payment Date</th>
-                        <th class="p-3 border-b">Due Dae</th>
-                        <th class="p-3 border-b relative group">
-                            Interest
-                            <span class="ml-1 cursor-pointer text-gray-400 group-hover:text-gray-600">
-                                ❓
-                                <span class="absolute left-0 mt-1 w-30 p-2 text-sm text-white bg-gray-800 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                                    If the payment is late, a 12% weekly interest applies.
-                                </span>
-                            </span>
-                        </th>
-                        <th class="p-3 border-b">Status(Received,Pending)</th>
+                        <th class="p-3 border-b">Due Date</th>
+                        <th class="p-3 border-b">Status</th>
+                        <th class="p-3 border-b">Action</th>
+                        <th class="p-3 border-b">Send</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="even:bg-gray-50 hover:bg-gray-100">
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                    </tr>
-                    <tr class="even:bg-gray-50 hover:bg-gray-100">
+                    @if($receivables->isEmpty())
+                        <tr>
+                            <td colspan="8" class="p-3 border-b text-center">No receivable records found.</td>
+                        </tr>
+                    @else
+                        @foreach($receivables as $receivable)
+                            <tr>
+                                <td class="p-3 border-b">{{ $receivable->sender_name }}</td>
+                                <td class="p-3 border-b">{{ $receivable->sender_id }}</td>
+                                <td class="p-3 border-b">₱{{ number_format($receivable->amount, 2) }}</td>
+                                <td class="p-3 border-b"></td>
+                                <td class="p-3 border-b">{{ $receivable->due_date }}</td>
+                                <td class="p-3 border-b text-yellow-500">{{ $receivable->status }}</td>
+                                <td class="p-3 border-b">
+                                    <form action="{{ route('receivables.approve', $receivable->id) }}" method="POST" class="inline" onsubmit="return showSuccessAlert(event)">
+                                        @csrf
+                                        <button type="submit" class="text-green-500 cursor-pointer">Approve</button>
+                                    </form>
 
-                    </tr>
-                    <tr class="even:bg-gray-50 hover:bg-gray-100">
-
-                    </tr>
+                                     |
+                                     <a href="#" class="text-red-500 cursor-pointer" onclick="showRejectAlert()">Reject</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
+
         </div>
     </main>
 </div>
+<script>
+    function showSuccessAlert(event) {
+        event.preventDefault();
+        Swal.fire({
+            title: "Success!",
+            text: "Transaction has been approved successfully.",
+            icon: "success",
+            confirmButtonText: "OK"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                event.target.submit();
+            }
+        });
+    }
+
+    function showRejectAlert() {
+        Swal.fire({
+            title: "Rejected!",
+            text: "Transaction has been rejected.",
+            icon: "error",
+            confirmButtonText: "OK"
+        });
+    }
+</script>
 @endsection

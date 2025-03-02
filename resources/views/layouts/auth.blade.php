@@ -28,7 +28,7 @@
 
     <div class="flex">
         <!-- Sidebar -->
-        @include('layouts.sidenav')
+      
 
         <!-- Main Content -->
         <main class="flex-1 p-6 overflow-y-auto pt-16">
@@ -38,7 +38,7 @@
     </div>
 
     <!-- Footer -->
-   
+
 
     <!-- Dropdown Menu Script -->
     <script>

@@ -12,15 +12,28 @@
             <p class="font-bold lg:text-4xl text-2xl w-full text-center text-[#00446b]">Bus Transportation Management System</p>
             <p class="font-semibold lg:text-3xl text-xl text-center mt-4 text-[#00446b]">Finance</p>
 
-            <form class="xl:w-4/6 lg:w-5/6 sm:w-2/3 w-full py-8 rounded-3xl shadow-lg mt-10 flex flex-col items-center border bg-white">
+            <form action="{{ route('auth.signin') }}" method="POST" class="xl:w-4/6 lg:w-5/6 sm:w-2/3 w-full py-8 rounded-3xl shadow-lg mt-10 flex flex-col items-center border bg-white">
+                @csrf
+
                 <p class="text-center mb-4 text-2xl text-[#00446b]">Sign In</p>
                 <hr class="border w-4/5 border-[#00446b]">
 
+                @if(session('error'))
+                    <p class="text-red-500 text-sm text-center mb-3">{{ session('error') }}</p>
+                @endif
+
                 <div class="mt-8 w-4/5">
-                    <input class="mt-1 block w-full bg-transparent rounded-md border p-2 focus:outline-none focus:border-[#00446b]" type="email" placeholder="Email">
+                    <input name="email" class="mt-1 block w-full bg-transparent rounded-md border p-2 focus:outline-none focus:border-[#00446b]" type="email" placeholder="Email" required>
+                    @error('email')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
+
                 <div class="mt-4 w-4/5">
-                    <input class="mt-1 block w-full bg-transparent rounded-md border p-2 focus:outline-none focus:border-[#00446b]" type="password" placeholder="Password">
+                    <input name="password" class="mt-1 block w-full bg-transparent rounded-md border p-2 focus:outline-none focus:border-[#00446b]" type="password" placeholder="Password" required>
+                    @error('password')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="w-4/5 flex justify-between mt-4 lg:mb-12 mb-8">
@@ -28,27 +41,29 @@
                         <input type="checkbox" name="remember" class="mr-2">
                         <span class="text-sm text-[#00446b]">Remember me</span>
                     </label>
-                    <a class="text-sm text-[#00446b] hover:text-gray-500" href="forgot.html">Forgot your password?</a>
+                    <a class="text-sm text-[#00446b] hover:text-gray-500" href="">Forgot your password?</a>
                 </div>
+
                 <div class="form-check form-check-info text-left">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
-                    <label class="form-check-label" for="flexCheckDefault">
-                      I agree to the <a href="javascript:;" class="text-dark font-weight-bolder">Terms and Conditions</a>
+                    <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                    <label class="form-check-label" for="termsCheck">
+                        I agree to the <a href="#" class="text-dark font-weight-bolder">Terms and Conditions</a>
                     </label>
                 </div>
+
                 <div class="flex items-center mt-4 w-4/5">
                     <button class="w-full font-medium p-2 rounded-md border bg-[#00446b] hover:bg-[#003354] text-white" type="submit">
                         Log In
                     </button>
                 </div>
-                
+
                 <!-- Divider with OR -->
                 <div class="flex items-center w-4/5 my-4">
                     <hr class="w-full border-gray-300">
                     <span class="mx-2 text-gray-500">or</span>
                     <hr class="w-full border-gray-300">
                 </div>
-                
+
                 <!-- Continue with Google Button -->
                 <div class="flex items-center w-4/5">
                     <button class="w-full font-medium p-2 rounded-md border border-gray-300 bg-white hover:bg-gray-100 text-black flex items-center justify-center" type="button">
@@ -56,10 +71,14 @@
                         Continue with Google
                     </button>
                 </div>
+
                 <div>
-                    <p class="text-gray-500 text-sm">Don't have an account? <a href="{{route('auth.signup')}}" class="text-blue-500 hover:text-blue-600 hover:underline font-light text-sm">Register</a></p>
-                </div>   
+                    <p class="text-gray-500 text-sm">Don't have an account?
+                        <a href="{{ route('auth.signup') }}" class="text-blue-500 hover:text-blue-600 hover:underline font-light text-sm">Register</a>
+                    </p>
+                </div>
             </form>
+
         </div>
     </div>
 </main>

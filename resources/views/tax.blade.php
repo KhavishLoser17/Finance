@@ -3,92 +3,8 @@
 @section('content')
 <div class="flex">
     <!-- Sidebar -->
-    <aside class="fixed left-0 h-screen w-64 bg-blue-300 text-white pt-16 p-4 space-y-4 overflow-y-auto">
-        <div class="flex items-center space-x-2 p-2">
-            <span class="text-lg font-semibold">Finance System</span>
-        </div>
-        <nav class="space-y-2">
-            <a href="{{ route('dashboard') }}" class="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('dashboard') ? 'bg-gray-700' : '' }}">
-                <span>🏠 Dashboard</span>
-            </a>
-            <a href="{{ route('ledger') }}" class="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('ledger') ? 'bg-gray-700' : '' }}">
-                <span>📖 General Ledger</span>
-            </a>
-            <hr class="border-gray-600 my-2">
-
-            <!-- Disbursement Section -->
-            <div>
-                <button class="dropdown-button flex items-center justify-between w-full p-2 rounded-md hover:bg-gray-700 transition">
-                    <span>💰 Disbursement</span>
-                    <i class="lucide-chevron-down"></i>
-                </button>
-                <div class="pl-6 mt-1 space-y-2 hidden">
-                    <a href="{{ route('payment') }}" class="block p-2 rounded-md hover:bg-gray-700 transition">
-                        📅 Payment Scheduling
-                    </a>
-                </div>
-            </div>
-
-            <!-- Collection Section -->
-            <div>
-                <button class="dropdown-button flex items-center justify-between w-full p-2 rounded-md hover:bg-gray-700 transition">
-                    <span>💳 Collection</span>
-                    <i class="lucide-chevron-down"></i>
-                </button>
-                <div class="pl-6 mt-1 space-y-2 hidden">
-                    <a href="{{ route('collected') }}" class="block p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('receivables.aging') ? 'bg-gray-700' : '' }}">
-                        📊 Collected Funds
-                    </a>
-                </div>
-            </div>
-
-            <!-- Budget Management Section -->
-            <div>
-                <button class="dropdown-button flex items-center justify-between w-full p-2 rounded-md hover:bg-gray-700 transition">
-                    <span>💼 Budget Management</span>
-                    <i class="lucide-chevron-down"></i>
-                </button>
-                <div class="pl-6 mt-1 space-y-2 hidden">
-                    <a href="{{ route('reimburse') }}" class="block p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('budget.forecast') ? 'bg-gray-700' : '' }}">
-                        📊 Reimbursement Request
-                    </a>
-                    <a href="{{ route('audit') }}" class="block p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('audit.logs') ? 'bg-gray-700' : '' }}">
-                        📝 Auditing & Transaction Logs
-                    </a>
-                </div>
-            </div>
-
-            <!-- Account Receivable Section -->
-            <div>
-                <button class="dropdown-button flex items-center justify-between w-full p-2 rounded-md hover:bg-gray-700 transition">
-                    <span>💵 Account Receivable</span>
-                    <i class="lucide-chevron-down"></i>
-                </button>
-                <div class="pl-6 mt-1 space-y-2 hidden">
-                    <a href="{{ route('receivables') }}" class="block p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('receivables.aging') ? 'bg-gray-700' : '' }}">
-                        📊 Receivable Financial Report
-                    </a>
-                </div>
-            </div>
-
-            <!-- Account Payable Section -->
-            <div>
-                <button class="dropdown-button flex items-center justify-between w-full p-2 rounded-md hover:bg-gray-700 transition">
-                    <span>💸 Account Payable</span>
-                    <i class="lucide-chevron-down"></i>
-                </button>
-                <div class="pl-6 mt-1 space-y-2 hidden">
-                    <a href="{{ route('compliance') }}" class="block p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('vendor.management') ? 'bg-gray-700' : '' }}">
-                        📅 Compliance
-                    </a>
-                    <a href="{{ route('tax') }}" class="block p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('payment.discount') ? 'bg-gray-700' : '' }}">
-                        💲 Tax and Insurance
-                    </a>
-                </div>
-            </div>
-        </nav>
-
-    </aside>
+    @include('layouts.navbar')
+    @include('layouts.sidenav')
 
     <!-- Main Content -->
     <main class="flex-1 ml-64 p-6">
@@ -104,8 +20,8 @@
                 </span>
                 <input type="text" placeholder="Search..." class="border border-blue-500 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
             </div>
-            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-                + Add
+            <button onclick="toggleModal(true)" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                + Add Employee Salary
             </button>
         </div>
         <div class="bg-white p-6 shadow rounded-lg">
@@ -114,53 +30,206 @@
                     <tr>
                         <th class="p-3 border-b">Employee Name</th>
                         <th class="p-3 border-b">Salary</th>
-                        <th class="p-3 border-b relative group">
-                            Government Tax
-                            <span class="ml-1 cursor-pointer text-gray-400 group-hover:text-gray-600">
-                                ❓
-                                <span class="absolute left-0 mt-1 w-30 p-2 text-sm text-white bg-gray-800 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                                     Government tax 8%.
-                                </span>
-                            </span>
-                        </th>
-                        <th class="p-3 border-b relative group">
-                            Social Security System
-                            <span class="ml-1 cursor-pointer text-gray-400 group-hover:text-gray-600">
-                                ❓
-                                <span class="absolute left-0 mt-1 w-30 p-2 text-sm text-white bg-gray-800 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                                     SSS 3%.
-                                </span>
-                            </span>
-                        </th>
-                        <th class="p-3 border-b relative group">
-                            Pag-Ibig
-                            <span class="ml-1 cursor-pointer text-gray-400 group-hover:text-gray-600">
-                                ❓
-                                <span class="absolute left-0 mt-1 w-25 p-2 text-sm text-white bg-gray-800 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                                     Pag-ibig 3%.
-                                </span>
-                            </span>
-                        </th>
-                        <th class="p-3 border-b relative group">
-                            Phil Health
-                            <span class="ml-1 cursor-pointer text-gray-400 group-hover:text-gray-600">
-                                ❓
-                                <span class="absolute left-0 mt-1 w-30 p-2 text-sm text-white bg-gray-800 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                                     Phil Health 8%.
-                                </span>
-                            </span>
-                        </th>
-                        <th class="p-3 border-b">Total Salary</th>
-                        <th class="p-3 border-b">Release Date</th>
-
+                        <th class="p-3 border-b">Government Tax</th>
+                        <th class="p-3 border-b">SSS</th>
+                        <th class="p-3 border-b">Pag-Ibig</th>
+                        <th class="p-3 border-b">Phil Health</th>
+                        <th class="p-3 border-b">Net Salary</th>
+                        <th class="p-3 border-b">Schedule Release Date</th>
+                        <th class="p-3 border-b">Payment Method</th>
+                        <th class="p-3 border-b">Status</th>
+                        <th class="p-3 border-b">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="even:bg-gray-50 hover:bg-gray-100">
-                    </tr>
+                    @php
+                        $totalSalaries = 0;
+                        $totalGovTax = 0;
+                        $totalSSS = 0;
+                        $totalPagibig = 0;
+                        $totalPhilhealth = 0;
+                        $totalNetSalary = 0;
+                    @endphp
+
+                    @if($taxes->isEmpty())
+                        <tr>
+                            <td colspan="10" class="p-3 border-b text-center">No tax records found.</td>
+                        </tr>
+                    @else
+                        @foreach($taxes as $tax)
+                            @php
+                                $govTax = $tax->amount * 0.08;
+                                $sss = $tax->amount * 0.03;
+                                $pagibig = $tax->amount * 0.03;
+                                $philhealth = $tax->amount * 0.08;
+
+                                $totalDeductions = $govTax + $sss + $pagibig + $philhealth;
+                                $totalSalary = $tax->amount - $totalDeductions;
+
+                                $totalSalaries += $tax->amount;
+                                $totalGovTax += $govTax;
+                                $totalSSS += $sss;
+                                $totalPagibig += $pagibig;
+                                $totalPhilhealth += $philhealth;
+                                $totalNetSalary += $totalSalary;
+                            @endphp
+                            <tr class="even:bg-gray-50 hover:bg-gray-100">
+                                <td class="p-3 border-b">{{ $tax->employee_name }}</td>
+                                <td class="p-3 border-b">₱{{ number_format($tax->amount, 2) }}</td>
+                                <td class="p-3 border-b">₱{{ number_format($govTax, 2) }}</td>
+                                <td class="p-3 border-b">₱{{ number_format($sss, 2) }}</td>
+                                <td class="p-3 border-b">₱{{ number_format($pagibig, 2) }}</td>
+                                <td class="p-3 border-b">₱{{ number_format($philhealth, 2) }}</td>
+                                <td class="p-3 border-b font-semibold">{{ number_format($totalSalary, 2) }}</td>
+                                <td class="p-3 border-b">{{ date('m/d/Y', strtotime($tax->schedule_release_date)) }}</td>
+                                <td class="p-3 border-b">{{ $tax->payment_method }}</td>
+                                <td class="p-4 border-b">
+                                    <span class="px-3 py-1 text-sm font-semibold text-white
+                                        {{ $tax['status'] == 'Rejected' ? 'bg-red-500' : ($tax['status'] == 'Pending' ? 'bg-yellow-500' : 'bg-green-500') }}
+                                        rounded-full">
+                                        {{ $tax['status'] }}
+                                    </span>
+                                </td>
+                                <td class="p-3 border-b">
+                                    @if ($tax->status === 'Pending')
+                                        <form id="approve-form-{{ $tax->id }}" action="{{ route('tax.approve', $tax->id) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            <button type="button" class="text-green-500 cursor-pointer" onclick="confirmApproval({{ $tax->id }})">Approve</button>
+                                        </form>
+                                        |
+                                        <form id="reject-form-{{ $tax->id }}" action="{{ route('tax.reject', $tax->id) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            <button type="button" class="text-red-500 cursor-pointer" onclick="confirmRejection({{ $tax->id }})">Reject</button>
+                                        </form>
+                                    @else
+                                        <span class="text-gray-500">Action Not Available</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
+                <tfoot class="bg-gray-100 font-semibold">
+                    <hr class="border-gray-600 my-2">
+                    <tr>
+                        <td class="p-3 border-t">Totals:</td>
+                        <td class="p-3 border-t">₱{{ number_format($totalSalaries, 2) }}</td>
+                        <td class="p-3 border-t">₱{{ number_format($totalGovTax, 2) }}</td>
+                        <td class="p-3 border-t">₱{{ number_format($totalSSS, 2) }}</td>
+                        <td class="p-3 border-t">₱{{ number_format($totalPagibig, 2) }}</td>
+                        <td class="p-3 border-t">₱{{ number_format($totalPhilhealth, 2) }}</td>
+                        <td class="p-3 border-t">₱{{ number_format($totalNetSalary, 2) }}</td>
+                        <td colspan="3" class="p-3 border-t"></td>
+                    </tr>
+                </tfoot>
             </table>
+
         </div>
+
+        <div id="salaryModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg w-[600px]">
+                <h2 class="text-xl font-semibold mb-4">Add Employee Salary</h2>
+
+                <form action="{{route('tax.store')}}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Employee Name</label>
+                            <input type="text" name="employee_name" class="w-full border-gray-300 rounded-lg p-2" placeholder="Employee Name" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Transaction ID</label>
+                            <input type="text" name="transaction_id" class="w-full border-gray-300 rounded-lg p-2" placeholder="Transaction ID" required>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Description</label>
+                            <input type="text" name="description" class="w-full border-gray-300 rounded-lg p-2" placeholder="Description" required>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Salary</label>
+                            <input type="number" name="amount" class="w-full border-gray-300 rounded-lg p-2" placeholder="Input Salary" required>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Payment Method</label>
+                            <select name="payment_method" class="w-full border-gray-300 rounded-lg p-2" required>
+                                <option value="Bank Transfer">Bank Transfer</option>
+                                <option value="Check">Check</option>
+                                <option value="Cash">Cash</option>
+                                <option value="E-Wallet">E-Wallet</option>
+                            </select>
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium text-gray-700">Schedule Release Date</label>
+                            <input type="date" name="schedule_release_date" class="w-full border-gray-300 rounded-lg p-2" required>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Transaction Type</label>
+                            <select name="transaction_type" class="w-full border-gray-300 rounded-lg p-2" required>
+                                <option>Credit</option>
+                                <option>Debit</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Status</label>
+                            <select name="status" class="w-full border-gray-300 rounded-lg p-2" required>
+                                <option value="Pending">Pending</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-2 mt-4">
+                        <button type="button" onclick="toggleModal(false)" class="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     </main>
 </div>
+
+<script>
+    function toggleModal(show) {
+        const modal = document.getElementById('salaryModal');
+        modal.classList.toggle('hidden', !show);
+    }
+</script>
+<script>
+    function confirmApproval(id) {
+        Swal.fire({
+            title: "Approve Transaction?",
+            text: "Are you sure you want to approve this transaction?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#10B981",
+            cancelButtonColor: "#6B7280",
+            confirmButtonText: "Yes, Approve"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById("approve-form-" + id).submit();
+            }
+        });
+    }
+
+    function confirmRejection(id) {
+        Swal.fire({
+            title: "Reject Transaction?",
+            text: "Are you sure you want to reject this transaction?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#EF4444",
+            cancelButtonColor: "#6B7280",
+            confirmButtonText: "Yes, Reject"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById("reject-form-" + id).submit();
+            }
+        });
+    }
+</script>
+
 @endsection
