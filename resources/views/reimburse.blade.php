@@ -28,7 +28,7 @@
             <table class="w-full text-left border-collapse">
                 <thead class="bg-gray-100">
                     <tr>
-                        <th class="p-3 border-b">Employee Name</th>
+                        <th class="p-3 border-b">Department</th>
                         <th class="p-3 border-b">Request Date</th>
                         <th class="p-3 border-b">Description</th>
                         <th class="p-3 border-b">Evidence</th>
@@ -57,22 +57,25 @@
                                 </span>
                             </td>
                             <td class="border px-4 py-2">
-                                @if($reimbursement->status === 'Pending')
-                                    <form id="form-approve-{{ $reimbursement->id }}" action="{{ route('reimburse.approve', $reimbursement->id) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="button" class="text-green-500 cursor-pointer" onclick="updateStatus('approve', {{ $reimbursement->id }})">Approve</button>
-                                    </form>
-                                    |
-                                    <form id="form-reject-{{ $reimbursement->id }}" action="{{ route('reimburse.reject', $reimbursement->id) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="button" class="text-red-500 cursor-pointer" onclick="updateStatus('reject', {{ $reimbursement->id }})">Reject</button>
-                                    </form>
-                                @else
-                                    <span class="text-gray-400 cursor-not-allowed">Action not available</span>
+                                @if(auth()->user()->user_type !== 'Accountant')
+                                    @if($reimbursement->status === 'Pending')
+                                        <form id="form-approve-{{ $reimbursement->id }}" action="{{ route('reimburse.approve', $reimbursement->id) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="button" class="text-green-500 cursor-pointer" onclick="updateStatus('approve', {{ $reimbursement->id }})">Approve</button>
+                                        </form>
+                                        |
+                                        <form id="form-reject-{{ $reimbursement->id }}" action="{{ route('reimburse.reject', $reimbursement->id) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="button" class="text-red-500 cursor-pointer" onclick="updateStatus('reject', {{ $reimbursement->id }})">Reject</button>
+                                        </form>
+                                    @else
+                                        <span class="text-gray-400 cursor-not-allowed">Action not available</span>
+                                    @endif
                                 @endif
                             </td>
+
                         </tr>
                     @endforeach
                 </tbody>

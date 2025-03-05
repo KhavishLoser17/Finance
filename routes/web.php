@@ -11,7 +11,9 @@ use App\Http\Controllers\ReimburseController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\JournalController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AllocationController;
 
 // Public Routes
 Route::get('/', function () { return view('index'); })->name('index');
@@ -91,3 +93,14 @@ Route::prefix('ledger')->group(function () {
 // Transaction Logs
 Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction');
 });
+
+Route::get('/journal', [JournalController::class, 'index'])->name('journal');
+
+
+//Budget Allocation
+
+Route::get('/allocation',[AllocationController::class, 'show'])->name('allocation');
+Route::post('/allocation', [AllocationController::class, 'store'])->name('allocation.store');
+Route::get('/allocation', [AllocationController::class, 'index'])->name('allocation');
+
+

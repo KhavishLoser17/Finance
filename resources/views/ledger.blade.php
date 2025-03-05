@@ -20,9 +20,7 @@
                 </span>
                 <input type="text" placeholder="Search..." class="border border-blue-500 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
             </div>
-            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-                Export Excel
-            </button>
+          
             <button onclick="openEquityModal()" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
                 + ADD COMPANY EQUITY
             </button>
@@ -128,6 +126,15 @@
                     <div class="mb-3">
                         <label class="block font-medium">Amount</label>
                         <input type="number" name="amount" class="w-full border rounded px-3 py-2" required>
+                    </div>
+                    <div>
+                        <label class="block mb-2">Payment Method</label>
+                        <select name="payment_method" class="w-full p-2 border rounded mb-3" required>
+                            <option>Bank Transfer</option>
+                            <option>Cash</option>
+                            <option>Check</option>
+                            <option>E-Wallet</option>
+                        </select>
                     </div>
 
                     <div class="mb-3">

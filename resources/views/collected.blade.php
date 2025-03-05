@@ -20,22 +20,19 @@
                 </span>
                 <input type="text" placeholder="Search..." class="border border-blue-500 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
             </div>
-            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-                + Add
-            </button>
+
         </div>
         <div class="bg-white p-6 shadow rounded-lg">
             <div class="overflow-x-auto">
                 <table class="min-w-full border border-gray-300 rounded-lg shadow-md text-left">
                     <thead class="bg-gray-200">
                         <tr>
-                            <th class="p-3 border-b">Sender Name</th>
-                            <th class="p-3 border-b">Sender ID</th>
+                            <th class="p-3 border-b">Department</th>
+                            <th class="p-3 border-b">Department ID</th>
                             <th class="p-3 border-b">Transaction ID</th>
                             <th class="p-3 border-b">Amount</th>
                             <th class="p-3 border-b">Payment Date</th>
                             <th class="p-3 border-b">Due Date</th>
-
                             <th class="p-3 border-b">Status</th>
                         </tr>
                     </thead>

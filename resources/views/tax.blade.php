@@ -90,21 +90,23 @@
                                         {{ $tax['status'] }}
                                     </span>
                                 </td>
-                                <td class="p-3 border-b">
-                                    @if ($tax->status === 'Pending')
-                                        <form id="approve-form-{{ $tax->id }}" action="{{ route('tax.approve', $tax->id) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            <button type="button" class="text-green-500 cursor-pointer" onclick="confirmApproval({{ $tax->id }})">Approve</button>
-                                        </form>
-                                        |
-                                        <form id="reject-form-{{ $tax->id }}" action="{{ route('tax.reject', $tax->id) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            <button type="button" class="text-red-500 cursor-pointer" onclick="confirmRejection({{ $tax->id }})">Reject</button>
-                                        </form>
-                                    @else
-                                        <span class="text-gray-500">Action Not Available</span>
+                                @if(auth()->user()->user_type !== 'Accountant')
+                                        <td class="p-3 border-b">
+                                            @if ($tax->status === 'Pending')
+                                                <form id="approve-form-{{ $tax->id }}" action="{{ route('tax.approve', $tax->id) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    <button type="button" class="text-green-500 cursor-pointer" onclick="confirmApproval({{ $tax->id }})">Approve</button>
+                                                </form>
+                                                |
+                                                <form id="reject-form-{{ $tax->id }}" action="{{ route('tax.reject', $tax->id) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    <button type="button" class="text-red-500 cursor-pointer" onclick="confirmRejection({{ $tax->id }})">Reject</button>
+                                                </form>
+                                            @else
+                                                <span class="text-gray-500">Action Not Available</span>
+                                            @endif
+                                        </td>
                                     @endif
-                                </td>
                             </tr>
                         @endforeach
                     @endif

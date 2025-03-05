@@ -17,6 +17,15 @@
             <span>📖 General Ledger</span>
         </a>
         <hr class="border-gray-600 my-2">
+        <div>
+            <a href="{{ route('journal') }}"
+               class="flex items-center gap-2 w-full p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('journal') ? 'bg-gray-700' : '' }}">
+                <i class="fa-solid fa-book"></i>
+                <span>Journal</span>
+            </a>
+        </div>
+
+
 
         <!-- Disbursement Section -->
         <div>
@@ -30,7 +39,6 @@
                 </a>
             </div>
         </div>
-
         <!-- Collection Section -->
         <div>
             <button class="dropdown-button flex items-center justify-between w-full p-2 rounded-md hover:bg-gray-700 transition">
@@ -50,6 +58,10 @@
                 <span>💼 Budget Management</span>
             </button>
             <div class="pl-6 mt-1 space-y-2 hidden">
+                <a href="{{ route('allocation') }}" class="block p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('budget.forecast') ? 'bg-gray-700' : '' }}">
+                    <i class="fa-solid fa-landmark"></i>
+                    <span>Budget Allocation</span>
+                </a>
                 <a href="{{ route('reimburse') }}" class="block p-2 rounded-md hover:bg-gray-700 transition {{ request()->routeIs('budget.forecast') ? 'bg-gray-700' : '' }}">
                     📊 Financial Request
                 </a>

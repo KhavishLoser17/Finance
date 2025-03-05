@@ -25,14 +25,14 @@
             <table class="w-full text-left border-collapse">
                 <thead class="bg-gray-100">
                     <tr>
-                        <th class="p-3 border-b">Sender Name</th>
-                        <th class="p-3 border-b">Sender ID</th>
+                        <th class="p-3 border-b">Department</th>
+                        <th class="p-3 border-b">Department ID</th>
                         <th class="p-3 border-b">Amount</th>
                         <th class="p-3 border-b">Payment Date</th>
                         <th class="p-3 border-b">Due Date</th>
                         <th class="p-3 border-b">Status</th>
                         <th class="p-3 border-b">Action</th>
-                        <th class="p-3 border-b">Send</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -49,15 +49,17 @@
                                 <td class="p-3 border-b"></td>
                                 <td class="p-3 border-b">{{ $receivable->due_date }}</td>
                                 <td class="p-3 border-b text-yellow-500">{{ $receivable->status }}</td>
-                                <td class="p-3 border-b">
-                                    <form action="{{ route('receivables.approve', $receivable->id) }}" method="POST" class="inline" onsubmit="return showSuccessAlert(event)">
-                                        @csrf
-                                        <button type="submit" class="text-green-500 cursor-pointer">Approve</button>
-                                    </form>
+                                @if(auth()->user()->user_type !== 'Accountant')
+                                    <td class="p-3 border-b">
+                                        <form action="{{ route('receivables.approve', $receivable->id) }}" method="POST" class="inline" onsubmit="return showSuccessAlert(event)">
+                                            @csrf
+                                            <button type="submit" class="text-green-500 cursor-pointer">Approve</button>
+                                        </form>
 
-                                     |
-                                     <a href="#" class="text-red-500 cursor-pointer" onclick="showRejectAlert()">Reject</a>
-                                </td>
+                                        |
+                                        <a href="#" class="text-red-500 cursor-pointer" onclick="showRejectAlert()">Reject</a>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                     @endif

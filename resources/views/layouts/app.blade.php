@@ -9,6 +9,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 
     @vite('resources/css/app.css')
@@ -16,8 +17,8 @@
 
 </head>
 
-<body class="bg-gray-100">
-  
+<body class="bg-gray-100 flex flex-col min-h-screen">
+
     <div id="app">
         <!-- Navbar (Keeps it full width, does not overlap sidebar) -->
 
@@ -33,9 +34,11 @@
         </div>
 
         <!-- Footer -->
-        @include('layouts.footer')
-    </div>
 
+    </div>
+    <footer class="w-full bg-white shadow mt-auto">
+        @include('layouts.footer')
+    </footer>
     <!-- Dropdown Menu Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {

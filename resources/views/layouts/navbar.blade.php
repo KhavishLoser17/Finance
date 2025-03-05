@@ -15,10 +15,17 @@
                     </button>
 
                     <ul id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md hidden">
+                        @if(auth()->check())
                         <li class="p-2 border-b text-center">
-                            <h6 class="font-semibold">Finance Admin</h6>
-                            <span class="text-sm text-gray-500">Accountant</span>
+                            <h6 class="font-semibold">{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</h6>
+                            <span class="text-sm text-gray-500">{{ auth()->user()->first_name }}</span>
                         </li>
+                    @else
+                        <li class="p-2 border-b text-center">
+                            <h6 class="font-semibold">Guest</h6>
+                            <span class="text-sm text-gray-500">User</span>
+                        </li>
+                        @endif
                         <li>
                             <a href="users-profile.html" class="flex items-center px-4 py-2 hover:bg-gray-100">
                                 <i class="bi bi-person mr-2"></i> My Profile

@@ -17,12 +17,13 @@ return new class extends Migration
             $table->string('transaction_id')->unique();
             $table->text('description');
             $table->string('request_by');
+            $table->decimal('notes_amount', 10, 2)->nullable();
             $table->date('request_date');
             $table->string('evidence')->nullable(); // File path
             $table->decimal('amount', 10, 2);
             $table->string('payment_method');
             $table->enum('transaction_type', ['Debit', 'Credit'])->default('Debit');
-            $table->enum('status', ['Pending', 'Completed', 'Rejected'])->default('Pending');
+            $table->enum('status', ['Pending', 'Approved', 'Rejected'])->default('Pending');
             $table->timestamps();
         });
     }

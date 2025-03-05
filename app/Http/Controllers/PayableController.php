@@ -21,6 +21,7 @@ class PayableController extends Controller
         'transaction_id' => 'required|string|max:255|unique:payables,transaction_id',
         'description' => 'required|string',
         'request_by' => 'required|string',
+        'notes_amount' => 'nullable|numeric|min:0',
         'request_date' => 'required|date',
         'evidence' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         'amount' => 'required|numeric|min:0',

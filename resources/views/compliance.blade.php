@@ -28,7 +28,7 @@
             <table class="w-full text-left border-collapse">
                 <thead class="bg-gray-100">
                     <tr>
-                        <th class="p-3 border-b">Employee Name</th>
+                        <th class="p-3 border-b">Department</th>
                         <th class="p-3 border-b">Transaction ID</th>
                         <th class="p-3 border-b">Description</th>
                         <th class="p-3 border-b">Request By</th>

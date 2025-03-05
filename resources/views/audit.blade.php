@@ -31,7 +31,7 @@
                 <table class="w-full text-left border-collapse mb-6">
                     <thead class="bg-gray-200">
                         <tr>
-                            <th class="p-3 border-b">Employee Name</th>
+                            <th class="p-3 border-b">Department</th>
                             <th class="p-3 border-b">Transaction ID</th>
                             <th class="p-3 border-b">Description</th>
                             <th class="p-3 border-b">Request By</th>
@@ -66,20 +66,23 @@
                                         {{ $payable->status }}
                                     </td>
                                     <td class="p-3 border-b">
-                                        @if($payable->status == 'Pending')
-                                            <form id="payableForm" action="{{ route('payable.approve', $payable->id) }}" method="POST" style="display:inline;">
-                                                @csrf
-                                                <button type="submit" class="text-green-500 cursor-pointer payable-approve">Approve</button>
-                                            </form>
-                                            |
-                                            <form id="rejectForm-{{ $payable->id }}" action="{{ route('payable.reject', $payable->id) }}" method="POST" style="display:inline;">
-                                                @csrf
-                                                <button type="button" class="text-red-500 cursor-pointer payable-reject" data-id="{{ $payable->id }}">Reject</button>
-                                            </form>
-                                        @else
-                                            <span class="text-gray-400">{{ $payable->status }}</span>
+                                        @if(auth()->user()->user_type !== 'Accountant')
+                                            @if($payable->status == 'Pending')
+                                                <form id="payableForm" action="{{ route('payable.approve', $payable->id) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    <button type="submit" class="text-green-500 cursor-pointer payable-approve">Approve</button>
+                                                </form>
+                                                |
+                                                <form id="rejectForm-{{ $payable->id }}" action="{{ route('payable.reject', $payable->id) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    <button type="button" class="text-red-500 cursor-pointer payable-reject" data-id="{{ $payable->id }}">Reject</button>
+                                                </form>
+                                            @else
+                                                <span class="text-gray-400">{{ $payable->status }}</span>
+                                            @endif
                                         @endif
                                     </td>
+
 
                                 </tr>
                             @endforeach
@@ -105,8 +108,8 @@
                 <table class="w-full text-left border-collapse">
                     <thead class="bg-gray-200">
                         <tr>
-                            <th class="p-3 border-b">Sender Name</th>
-                            <th class="p-3 border-b">Sender ID</th>
+                            <th class="p-3 border-b">Department</th>
+                            <th class="p-3 border-b">Department ID</th>
                             <th class="p-3 border-b">Transaction ID</th>
                             <th class="p-3 border-b">Description</th>
                             <th class="p-3 border-b">Amount</th>
@@ -129,9 +132,11 @@
 
                                     <td class="p-3 border-b">₱{{ number_format($receivable->amount, 2) }}</td>
                                     <td class="p-3 border-b text-yellow-500">{{ $receivable->status }}</td>
-                                    <td class="p-3 border-b">
-                                        <a href="{{route('receivables')}}" class="text-green-500 cursor-pointer">Confirm</a>
-                                    </td>
+                                    @if(auth()->user()->user_type !== 'Accountant')
+                                        <td class="p-3 border-b">
+                                            <a href="{{ route('receivables') }}" class="text-green-500 cursor-pointer">Confirm</a>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         @endif
@@ -146,7 +151,7 @@
                     <form action="{{ route('payable.store') }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-2 gap-4">
                         @csrf
                         <div>
-                            <label class="block mb-2">Employee Name</label>
+                            <label class="block mb-2">Department</label>
                             <input type="text" name="employee_name" class="w-full p-2 border rounded mb-3" required />
                         </div>
                         <div>
@@ -160,15 +165,6 @@
                         <div>
                             <label class="block mb-2">Request Date</label>
                             <input type="date" name="request_date" class="w-full p-2 border rounded mb-3" required />
-                        </div>
-                        <div class="col-span-2">
-                            <label class="block mb-2">Requested By:</label>
-                            <select name="request_by" class="w-full p-2 border rounded mb-3" required>
-                                <option>Human Resource</option>
-                                <option>Admin</option>
-                                <option>Logistic</option>
-                                <option>Core</option>
-                            </select>
                         </div>
                         <div>
                             <label class="block mb-2">Evidence (Image)</label>
@@ -186,9 +182,23 @@
                             <select name="payment_method" class="w-full p-2 border rounded mb-3" required>
                                 <option>Bank Transfer</option>
                                 <option>Cash</option>
-                                <option>Check</option>
+                                <option>Cheque</option>
                                 <option>E-Wallet</option>
                             </select>
+                        </div>
+                        <div>
+                            <label class="block mb-2">Promissory Note</label>
+                            <select name="request_by" id="payablePromissoryNote" class="w-full p-2 border rounded mb-3" required onchange="toggleNotesAmount('payable')">
+                                <option value="None">None</option>
+                                <option value="Notes Payable">Notes Payable</option>
+                            </select>
+
+                        </div>
+
+                        <!-- Notes Amount Field (Initially Hidden) -->
+                        <div id="payableNotesAmountContainer" class="hidden">
+                            <label class="block mb-2">Notes Amount</label>
+                            <input type="number" name="notes_amount" id="payableNotesAmount" class="w-full p-2 border rounded mb-3" placeholder="Enter Notes Amount" />
                         </div>
                         <div>
                             <label class="block mb-2">Transaction Type</label>
@@ -218,11 +228,11 @@
                     <form action="{{ route('receivable.store') }}" method="POST"  enctype="multipart/form-data" class="grid grid-cols-2 gap-4">
                         @csrf
                         <div>
-                            <label class="block mb-2">Sender Name</label>
+                            <label class="block mb-2">Department</label>
                             <input type="text" name="sender_name" class="w-full p-2 border rounded mb-3" required />
                         </div>
                         <div>
-                            <label class="block mb-2">Sender ID</label>
+                            <label class="block mb-2">Department ID</label>
                             <input type="text" name="sender_id" class="w-full p-2 border rounded mb-3" required />
                         </div>
                         <div>
@@ -233,13 +243,6 @@
                             <label class="block mb-2">Description</label>
                             <input type="text" name="description" class="w-full p-2 border rounded mb-3" required />
                         </div>
-                        <div class="relative">
-                            <label class="block mb-2">Amount</label>
-                            <div class="flex items-center border rounded mb-3">
-                                <span class="px-3 bg-gray-200 border-r">₱</span>
-                                <input type="number" name="amount" class="w-full p-2 border-none" required />
-                            </div>
-                        </div>
                         <div>
                             <label class="block mb-2">Payment Method</label>
                             <select name="payment_method" class="w-full p-2 border rounded mb-3" required>
@@ -248,6 +251,26 @@
                                 <option>Check</option>
                                 <option>E-Wallet</option>
                             </select>
+                        </div>
+                        <div class="relative">
+                            <label class="block mb-2">Amount</label>
+                            <div class="flex items-center border rounded mb-3">
+                                <span class="px-3 bg-gray-200 border-r">₱</span>
+                                <input type="number" name="amount" class="w-full p-2 border-none" required />
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block mb-2">Promissory Note</label>
+                            <select name="request_by" id="receivablePromissoryNote" class="w-full p-2 border rounded mb-3" required onchange="toggleNotesAmount('receivable')">
+                                <option value="None">None</option>
+                                <option value="Notes Receivable">Notes Receivable</option>
+                            </select>
+                        </div>
+
+                        <!-- Notes Amount Field (Initially Hidden) -->
+                        <div id="receivableNotesAmountContainer" class="hidden">
+                            <label class="block mb-2">Notes Amount</label>
+                            <input type="number" name="notes_amount" id="receivableNotesAmount" class="w-full p-2 border rounded mb-3" placeholder="Enter Notes Amount" />
                         </div>
                         <div>
                             <label class="block mb-2">Payment Date</label>
@@ -294,6 +317,20 @@
         document.getElementById("receivable-modal").classList.add("hidden");
     }
 </script>
+
+<script>
+    function toggleNotesAmount(modalType) {
+        let promissoryNote = document.getElementById(modalType + "PromissoryNote").value;
+        let notesAmountContainer = document.getElementById(modalType + "NotesAmountContainer");
+        let notesAmountInput = document.getElementById(modalType + "NotesAmount");
+
+        let isNotesSelected = promissoryNote === "Notes Payable" || promissoryNote === "Notes Receivable";
+        notesAmountContainer.classList.toggle("hidden", !isNotesSelected);
+        notesAmountInput.required = isNotesSelected;
+    }
+</script>
+
+
 @if(session('success'))
 <script>
     document.addEventListener("DOMContentLoaded", function () {

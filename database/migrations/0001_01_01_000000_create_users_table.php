@@ -19,6 +19,7 @@ return new class extends Migration
                 $table->string('email')->unique();
                 $table->string('contact_number');
                 $table->string('password');
+                $table->string('user_type')->default('Accountant');
                 $table->timestamps();
             });
         }

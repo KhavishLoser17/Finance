@@ -19,6 +19,8 @@ return new class extends Migration
             $table->text('description');
             $table->decimal('amount', 10, 2);
             $table->string('payment_method');
+            $table->string('request_by');
+            $table->decimal('notes_amount', 10, 2)->nullable();
             $table->date('payment_date');
             $table->date('due_date');
             $table->enum('transaction_type', ['Debit', 'Credit'])->default('Debit');

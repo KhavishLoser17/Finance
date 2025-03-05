@@ -12,29 +12,35 @@
         <a href="" class="text-blue-500">Accounting Dashboard</a>
         <hr class="border-gray-600 my-2">
             <!-- Header -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 mb-6">
 
                 <div class="bg-white p-4 shadow rounded-lg">
                     <p class="text-gray-600">Monthly Revenue</p>
-                    <p class="text-2xl font-semibold text-green-500">${{ number_format($totalRevenue, 2) }}</p>
+                    <p class="text-2xl font-semibold text-green-500">₱{{ number_format($totalRevenue, 2) }}</p>
                 </div>
 
                 <div class="bg-white p-4 shadow rounded-lg">
                     <p class="text-gray-600">Monthly Expenses</p>
-                    <p class="text-2xl font-semibold text-red-500">${{ number_format($totalExpenses, 2) }}</p>
+                    <p class="text-2xl font-semibold text-red-500">₱{{ number_format($totalExpenses, 2) }}</p>
                 </div>
-
                 <div class="bg-white p-4 shadow rounded-lg">
-                    <p class="text-gray-600">Income Tax (20%)</p>
+                    <p class="text-gray-600">Net Profit</p>
                     <p class="text-2xl font-semibold text-blue-500">
-                        ${{ number_format($totalRevenue * 0.2, 2) }}
+                        ₱{{ number_format($totalRevenue - $totalExpenses, 2) }}
                     </p>
                 </div>
 
                 <div class="bg-white p-4 shadow rounded-lg">
-                    <p class="text-gray-600">Net Profit</p>
+                    <p class="text-gray-600">Income Tax (20%)</p>
                     <p class="text-2xl font-semibold">
-                        ${{ number_format($totalRevenue - $totalExpenses, 2) }}
+                        ₱{{ number_format($totalRevenue * 0.2, 2) }}
+                    </p>
+                </div>
+
+                <div class="bg-white p-4 shadow rounded-lg">
+                    <p class="text-gray-600">Total Profit</p>
+                    <p class="text-2xl font-semibold text-blue-500">
+                        ₱{{ number_format($totalRevenue - $totalExpenses * 0.2, 2) }}
                     </p>
                 </div>
             </div>

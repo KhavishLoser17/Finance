@@ -17,6 +17,7 @@ class Payable extends Model
         'transaction_id',
         'description',
         'request_by',
+        'notes_amount',
         'request_date',
         'evidence',
         'amount',

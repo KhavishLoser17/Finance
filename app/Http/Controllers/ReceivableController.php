@@ -18,6 +18,8 @@ class ReceivableController extends Controller
             'description' => 'required|string',
             'amount' => 'required|numeric|min:0',
             'payment_method' => 'required|string|in:Bank Transfer,Cash,Check',
+            'request_by' => 'required|string',
+            'notes_amount' => 'nullable|numeric|min:0',
             'payment_date' => 'required|date',
             'due_date' => 'required|date|after_or_equal:payment_date',
             'transaction_type' => 'required|string|in:Debit,Credit',
@@ -36,5 +38,5 @@ class ReceivableController extends Controller
     return view('audit', compact('payableList', 'receivableList'));
 }
 
-        
+
 }

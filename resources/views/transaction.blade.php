@@ -27,7 +27,7 @@
                 <thead class="bg-gray-100 text-gray-700">
                     <tr>
                         <th class="p-4 border-b">Type</th>
-                        <th class="p-4 border-b">Employee Name</th>
+                        <th class="p-4 border-b">Department</th>
                         <th class="p-4 border-b">Transaction ID</th>
                         <th class="p-4 border-b">Description</th>
                         <th class="p-4 border-b">Request By</th>

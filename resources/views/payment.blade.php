@@ -27,7 +27,7 @@
                         <th class="border px-4 py-2">Request Date</th>
                         <th class="border px-4 py-2">Payment Method</th>
                         <th class="border px-4 py-2">Released Date</th>
-                        <th class="border px-4 py-2">Send to Payroll</th>
+                        <th class="border px-4 py-2">Disburse</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,12 +44,14 @@
                                 <td class="border px-4 py-2">{{ date('m/d/Y', strtotime($payable->request_date)) }}</td>
                                 <td class="border px-4 py-2">{{ $payable->payment_method ?? 'Not Specified' }}</td>
                                 <td class="border px-4 py-2">{{ $payable->request_date ? date('m/d/Y', strtotime($payable->request_date)) : 'Not Released' }}</td>
-                                <td class="border px-4 py-2">
-                                    <form id="" action="" method="POST">
-                                        @csrf
-                                        <button type="button" class="text-blue-500 cursor-pointer" onclick="confirmSend()">Send</button>
-                                    </form>
-                                </td>
+                                @if(auth()->user()->user_type !== 'Accountant')
+                                    <td class="border px-4 py-2">
+                                        <form id="" action="" method="POST">
+                                            @csrf
+                                            <button type="button" class="text-blue-500 cursor-pointer" onclick="confirmSend()">Dispatch</button>
+                                        </form>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                     @endif

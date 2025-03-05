@@ -40,6 +40,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'contact_number' => $request->contact_number,
             'password' => Hash::make($request->password),
+            'user_type' => $request->user_type ?? 'Accountant', // Default if not provided
         ]);
 
         return redirect()->route('auth.signin')->with('success', 'Account created successfully! Please log in.');
@@ -69,4 +70,5 @@ class AuthController extends Controller
 
         return redirect()->route('auth.signin')->with('success', 'You have been logged out.');
     }
+   
 }

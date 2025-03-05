@@ -18,6 +18,8 @@ class Receivable extends Model
         'description',
         'amount',
         'payment_method',
+        'request_by',
+        'notes_amount',
         'payment_date',
         'due_date',
         'transaction_type',
